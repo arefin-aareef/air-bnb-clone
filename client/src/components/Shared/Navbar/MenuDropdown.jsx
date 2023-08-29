@@ -3,6 +3,7 @@ import Avatar from './Avatar'
 import { useCallback, useContext, useState } from 'react'
 import { AuthContext } from '../../../providers/AuthProvider'
 import { Link } from 'react-router-dom'
+import { TfiWorld } from 'react-icons/tfi'
 
 const MenuDropdown = () => {
   const { user, logOut } = useContext(AuthContext)
@@ -12,10 +13,15 @@ const MenuDropdown = () => {
   }, [])
   return (
     <div className='relative'>
-      <div className='flex flex-row items-center gap-3'>
+      <div className='flex flex-row items-center gap-1'>
         <div className='hidden md:block text-sm font-semibold py-3 px-4 rounded-full hover:bg-neutral-100 transition cursor-pointer'>
-          AirBNB your home
+          Airbnb your home
         </div>
+
+        <div className='hidden md:block text-sm font-semibold py-3 px-4 rounded-full hover:bg-neutral-100 transition cursor-pointer'>
+          <TfiWorld></TfiWorld>
+        </div>
+        
         <div
           onClick={toggleOpen}
           className='p-4 md:py-1 md:px-2 border-[1px] border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition'
