@@ -1,4 +1,4 @@
-import Categories from "../components/Categories/Categories";
+import Categories from "../../components/Categories/Categories";
 
 
 const Home = () => {
