@@ -4,7 +4,6 @@ import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import RoomDetails from "../pages/RoomDetails/RoomDetails";
 import SignUp from "../pages/SignUp/SignUp";
-import PrivateRoute from './PrivateRoute'
 
 export const router = createBrowserRouter([
     {
@@ -17,7 +16,7 @@ export const router = createBrowserRouter([
         },
         {
           path: '/room/:id',
-          element: <PrivateRoute><RoomDetails></RoomDetails></PrivateRoute>
+          element: <RoomDetails></RoomDetails>
         }
       ]
     },
