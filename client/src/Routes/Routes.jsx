@@ -1,5 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Main from "../Layout/Main";
+import FilteredRooms from "../pages/FilteredRooms/FilteredRooms";
 import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import RoomDetails from "../pages/RoomDetails/RoomDetails";
@@ -13,6 +14,10 @@ export const router = createBrowserRouter([
         {
           path: '/',
           element: <Home></Home>
+        },
+        {
+          path: '/filtered-rooms',
+          element: <FilteredRooms></FilteredRooms>
         },
         {
           path: '/room/:id',

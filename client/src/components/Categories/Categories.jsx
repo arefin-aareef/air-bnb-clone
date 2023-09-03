@@ -1,12 +1,13 @@
-/* eslint-disable react/jsx-key */
 import Container from "../Shared/Container";
 import { categories } from "./categoriesData";
 import CategoryBox from "./CategoryBox";
 import { BsFilterRight } from "react-icons/bs";
 import Filters from "../Filters/Filters";
 
-
 const Categories = () => {
+
+
+  
   return (
     <Container>
       <div className="pt-4 flex flex-row items-center justify-between overflow-x-auto">
@@ -26,10 +27,12 @@ const Categories = () => {
         </button>
 
         <dialog id="my_modal_3" className="modal" >
-          <form method="dialog" className="modal-box"  style={{ maxWidth: '800px' }}>
-            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
-              ✕
-            </button>
+          <form method="dialog" className="modal-box"  style={{ maxWidth: '800px', paddingBottom: "0" }}>
+            <div className="">
+              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                ✕
+              </button>
+            </div>
             <Filters></Filters>
           </form>
         </dialog>

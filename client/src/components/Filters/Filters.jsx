@@ -1,7 +1,13 @@
-/* eslint-disable no-unused-vars */
 import { useCallback, useEffect, useState } from "react";
 import Heading from "../Heading/Heading";
-import MultiRangeSlider from "../multiRangeSlider/multiRangeSlider";
+import PriceRangeFilter from "./PriceRangeFilter";
+import RoomTypeFilter from "./RoomTypeFilter";
+import PropertyTypeFilter from "./PropertyTypeFilter";
+import BedroomsFilter from "./BedroomsFilter";
+import BedsFilter from "./BedsFilter";
+import BathroomsFilter from "./BathroomsFilter";
+import Loader from "../Shared/Loader";
+import { useNavigate } from "react-router-dom";
 
 const Filters = () => {
   const [rooms, setRooms] = useState([]);
@@ -9,6 +15,18 @@ const Filters = () => {
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [priceRange, setPriceRange] = useState({ min: 100, max: 1000 });
   const [filteredData, setFilteredData] = useState([]);
+
+  const [selectedPropertyTypes, setSelectedPropertyTypes] = useState([]);
+  const [selectedBedrooms, setSelectedBedrooms] = useState("Any");
+  const [selectedBeds, setSelectedBeds] = useState("Any");
+  const [selectedBathrooms, setSelectedBathrooms] = useState("Any");
+
+  const navigate = useNavigate();
+
+  const handleFilteredRooms = () => {
+    console.log(filteredData);
+    navigate("/filtered-rooms", { state: { filteredData } });
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -27,7 +45,6 @@ const Filters = () => {
     setPriceRange({ min, max });
   }, []);
 
-
   const handleTypeSelection = (type) => {
     if (selectedTypes.includes(type)) {
       setSelectedTypes(
@@ -38,94 +55,105 @@ const Filters = () => {
     }
   };
 
+  const handlePropertyTypeSelection = (type) => {
+    if (selectedPropertyTypes.includes(type)) {
+      setSelectedPropertyTypes(
+        selectedPropertyTypes.filter(
+          (selectedPropertyTypes) => selectedPropertyTypes !== type
+        )
+      );
+    } else {
+      setSelectedPropertyTypes([...selectedPropertyTypes, type]);
+    }
+  };
+
   useEffect(() => {
     const updatedData = rooms.filter((room) => {
-      const price = room.price; 
+      const price = room.price;
       const type = room["place-type"];
+      const propertyType = room["property-type"];
+      const bedrooms = room.bedrooms;
+      const beds = room.beds;
+      const bathrooms = room.bathrooms;
+
       const priceInRange = price >= priceRange.min && price <= priceRange.max;
-      const typeSelected = selectedTypes.length === 0 || selectedTypes.includes(type);
-      return priceInRange && typeSelected;
+      const typeSelected =
+        selectedTypes.length === 0 || selectedTypes.includes(type);
+      const propertyTypeSelected =
+        selectedPropertyTypes.length === 0 ||
+        selectedPropertyTypes.includes(propertyType);
+      const bedroomsMatch =
+        selectedBedrooms === "Any" || bedrooms.toString() === selectedBedrooms;
+      const bedsMatch =
+        selectedBeds === "Any" || beds.toString() === selectedBeds;
+      const bathroomsMatch =
+        selectedBathrooms === "Any" ||
+        bathrooms.toString() === selectedBathrooms;
+
+      return (
+        priceInRange &&
+        typeSelected &&
+        propertyTypeSelected &&
+        bedroomsMatch &&
+        bedsMatch &&
+        bathroomsMatch
+      );
     });
     setFilteredData(updatedData);
-  }, [priceRange, selectedTypes, rooms]);
+  }, [
+    rooms,
+    priceRange,
+    selectedTypes,
+    selectedPropertyTypes,
+    selectedBedrooms,
+    selectedBeds,
+    selectedBathrooms,
+  ]);
+
+  if (loading) {
+    return <Loader></Loader>;
+  }
 
   return (
     <div>
-      <Heading
-        title="Price range"
-        subtitle="The average nightly price is $39"
-      ></Heading>
-      <MultiRangeSlider
-        min={100}
-        max={1000}
-        onChange={handlePriceRangeChange}
+      <Heading title="Price range" />
+      <PriceRangeFilter onChange={handlePriceRangeChange} />
+      <hr className="my-4" />
+      <Heading title="Type of place" />
+      <RoomTypeFilter
+        selectedTypes={selectedTypes}
+        onTypeSelection={handleTypeSelection}
+      />
+      <hr className="my-4" />
+
+      <Heading title="Rooms and beds" />
+      <BedroomsFilter
+        selectedBedrooms={selectedBedrooms}
+        onBedroomsSelection={setSelectedBedrooms}
+      />
+      <BedsFilter
+        selectedBeds={selectedBeds}
+        onBedsSelection={setSelectedBeds}
+      />
+      <BathroomsFilter
+        selectedBathrooms={selectedBathrooms}
+        onBathroomsSelection={setSelectedBathrooms}
+      />
+
+      <hr className="my-4" />
+      <Heading title="Property type" />
+      <PropertyTypeFilter
+        selectedPropertyTypes={selectedPropertyTypes}
+        onPropertyTypeSelection={handlePropertyTypeSelection}
       />
 
       <hr className="my-4" />
 
-      <Heading title="Type of place"></Heading>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
-        <div
-          className="checkbox-item flex items-center cursor-pointer"
-          onClick={() => handleTypeSelection("entire-place")}
-        >
-          <input
-            className="me-3 cursor-pointer"
-            style={{ width: "25px", height: "25px" }}
-            type="checkbox"
-            id="entire-place"
-            checked={selectedTypes.includes("entire-place")}
-          />
-          <div>
-            <p>
-              Entire Place <br /> <small>A place all to yourself</small>
-            </p>
-          </div>
-        </div>
-        <div
-          className="checkbox-item flex items-center  cursor-pointer"
-          onClick={() => handleTypeSelection("room")}
-        >
-          <input
-            className="me-3  cursor-pointer"
-            style={{ width: "25px", height: "25px" }}
-            type="checkbox"
-            id="room"
-            checked={selectedTypes.includes("room")}
-          />
-          <div>
-            <p>
-              Room <br />
-              <small>Your own room, plus access to shared spaces</small>
-            </p>
-          </div>
-        </div>
-        <div
-          className="checkbox-item flex items-center  cursor-pointer"
-          onClick={() => handleTypeSelection("shared-room")}
-        >
-          <input
-            className="me-3  cursor-pointer"
-            style={{ width: "25px", height: "25px" }}
-            type="checkbox"
-            id="shared-room"
-            checked={selectedTypes.includes("shared-room")}
-          />
-          <div>
-            <p>
-              Shared Room <br />
-              <small>
-                A sleeping space and common areas that may <br /> be shared with
-                others
-              </small>
-            </p>
-          </div>
-        </div>
+      <div className="sticky bottom-0 mb-0 bg-white p-2 text-right">
+        <button className="btn btn-neutral" onClick={handleFilteredRooms}>
+          Show {filteredData.length} stays
+        </button>
       </div>
-      <hr className="my-4" />
-      <button className="btn btn-neutral">
-        Show {filteredData.length} stays
-      </button>
     </div>
   );
 };

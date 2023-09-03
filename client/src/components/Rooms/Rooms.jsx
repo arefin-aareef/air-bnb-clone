@@ -1,15 +1,18 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import Heading from "../Heading/Heading";
 import Container from "../Shared/Container";
 import Loader from "../Shared/Loader";
 import Card from "./Card";
-import Heading from '../../components/Heading/Heading'
+
 
 
 const Rooms = () => {
+
     const [params, setParams] = useSearchParams()
     const category = params.get('category')
+
 
     const [rooms, setRooms] = useState([])
     const [loading, setLoading] = useState(false)
@@ -46,15 +49,15 @@ const Rooms = () => {
                         <Card key={index} room={room}></Card>
                      ))
                 }
-            </div> : <div className="pt-12">
-                <Heading
-                    title='No Rooms Available In This Category!'
-                    subtitle='Please Select Other Categories'
-                    center={true}
-                ></Heading>
-            </div>
+            </div> : <></>
             }
+
+            
         </Container>
+
+
+
+
     );
 };
 
