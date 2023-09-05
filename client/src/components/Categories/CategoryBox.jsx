@@ -10,6 +10,7 @@ const CategoryBox = ({ label, icon: Icon }) => {
     let currentQuery = {};
     if (params) {
       currentQuery = qs.parse(params.toString());
+      
     }
     const updatedQuery = {
       ...currentQuery,
@@ -24,6 +25,8 @@ const CategoryBox = ({ label, icon: Icon }) => {
       { skipNull: true }
     );
     navigate(url)
+    // console.log(url);
+
   };
 
   return (

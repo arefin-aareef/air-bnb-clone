@@ -24,7 +24,6 @@ const Filters = () => {
   const navigate = useNavigate();
 
   const handleFilteredRooms = () => {
-    console.log(filteredData);
     navigate("/filtered-rooms", { state: { filteredData } });
   };
 
