@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import Heading from "../Heading/Heading";
 import Container from "../Shared/Container";
 import Loader from "../Shared/Loader";
 import Card from "./Card";
@@ -12,8 +11,6 @@ const Rooms = () => {
 
     const [params, setParams] = useSearchParams()
     const category = params.get('category')
-    console.log(category);
-
 
     const [rooms, setRooms] = useState([])
     const [loading, setLoading] = useState(false)

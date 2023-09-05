@@ -4,6 +4,7 @@ import FilteredRooms from "../pages/FilteredRooms/FilteredRooms";
 import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
 import RoomDetails from "../pages/RoomDetails/RoomDetails";
+import SearchedRooms from "../pages/SearchedRooms/SearchedRooms";
 import SignUp from "../pages/SignUp/SignUp";
 
 export const router = createBrowserRouter([
@@ -18,6 +19,10 @@ export const router = createBrowserRouter([
         {
           path: '/filtered-rooms',
           element: <FilteredRooms></FilteredRooms>
+        },
+        {
+          path: '/searched-rooms',
+          element: <SearchedRooms></SearchedRooms>
         },
         {
           path: '/room/:id',

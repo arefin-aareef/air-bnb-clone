@@ -3,12 +3,19 @@ import Logo from "./Logo";
 import MenuDropdown from "./MenuDropdown";
 import Search from "./Search";
 import { useCallback, useState } from "react";
+import SecondSearch from "./SecondSearch";
+import SecondNavbar from "./SecondNavbar";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+
   const toggleOpen = useCallback(() => {
-    setIsOpen((value) => !value);
+    setIsOpen((value) => {
+        setIsOpen(!value)
+    });
+    
   }, []);
+
 
   return (
     <div className="fixed w-full bg-white z-10 shadow-sm">
@@ -16,11 +23,21 @@ const Navbar = () => {
         <Container>
           <div className="flex flex-row items-center justify-between gap-3 md:gap-0">
             <Logo></Logo>
-            <Search toggleOpen={toggleOpen}></Search>
+            {isOpen && isOpen ? (
+                <><SecondNavbar toggleOpen={toggleOpen}></SecondNavbar></>
+            ) : (
+              <>
+                <Search toggleOpen={toggleOpen}></Search>
+              </>
+            )}
             <MenuDropdown></MenuDropdown>
           </div>
           <div>
-          {isOpen && <Search></Search>}
+            {isOpen && (
+              <div className="mt-6">
+                <SecondSearch></SecondSearch>
+              </div>
+            )}
           </div>
         </Container>
       </div>
