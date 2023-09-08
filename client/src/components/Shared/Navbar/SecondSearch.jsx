@@ -6,6 +6,8 @@ import Where from "./Where";
 import Who from "./Who";
 
 const SecondSearch = () => {
+
+
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchedData, setSearchedData] = useState([]);
@@ -47,7 +49,7 @@ const SecondSearch = () => {
   return (
     <div className="w-3/4 mx-auto text-sm">
       <div className="border-[1px] w-full md:w-auto py-2 px-4 rounded-full shadow-sm hover:shadow-md transition cursor-pointer">
-        <div className="grid grid-cols-4 gap-1 ">
+        <div className="grid grid-cols-5 gap-1 ">
           <Where
             selectedRegion={selectedRegion}
             setSelectedRegion={setSelectedRegion}
@@ -63,16 +65,16 @@ const SecondSearch = () => {
             <p className="hidden sm:block">Add dates</p>
           </div>
 
-          <div className="py-1 px-2 pl-5 hover:bg-neutral-200 rounded-full text-gray-600 flex flex-row items-center justify-between gap-3">
-            
+          <div className="py-1 pl-5 hover:bg-neutral-200 rounded-full">
             <Who></Who>
-            <div
-              onClick={handleSearchedRooms}
-              className="py-2 px-3 items-center bg-rose-500 rounded-full text-white flex"
-            >
-              <BiSearch size={18} />
-              <p>Search</p>
-            </div>
+          </div>
+
+          <div
+            onClick={handleSearchedRooms}
+            className="py-2 px-3 items-center bg-rose-500 rounded-full text-white flex"
+          >
+            <BiSearch size={18} />
+            <p>Search</p>
           </div>
         </div>
       </div>
