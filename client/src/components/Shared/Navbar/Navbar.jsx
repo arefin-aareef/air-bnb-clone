@@ -13,13 +13,12 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [guestOpen, setGuestOpen] = useState(false);
   const [destinationOpen, setDestinationOpen] = useState(false);
+  const [count, setCount] = useState(0);
 
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchedData, setSearchedData] = useState([]);
   const [selectedRegion, setSelectedRegion] = useState();
-
-
 
   const toggleOpen = () => {
     setIsOpen(!isOpen);
@@ -55,16 +54,28 @@ const Navbar = () => {
   useEffect(() => {
     const updatedData = rooms.filter((room) => {
       const region = room["region"];
+      const regionSelected =
+        selectedRegion === "any" || region === selectedRegion;
+      const guestsMatch = room.guests >= count;
 
-      const regionSelected = selectedRegion === "any" || region === selectedRegion;
+      if (selectedRegion && count > 0) {
+        return regionSelected && guestsMatch;
+      } else if (selectedRegion) {
+        return regionSelected;
+      } else if (count > 0) {
+        return guestsMatch;
+      } else {
+        return true;
+      }
 
-      console.log(regionSelected);
-      
-      return regionSelected ;
+      // return regionSelected && guestsMatch ;
     });
+
+    console.log("check", count);
+
     setSearchedData([updatedData]);
-  }, [rooms, selectedRegion]);
-  
+  }, [rooms, selectedRegion, count]);
+
   useEffect(() => {
     if (!isOpen) {
       setGuestOpen(false);
@@ -101,15 +112,13 @@ const Navbar = () => {
                   toggleDestination={toggleDestination}
                   searchedData={searchedData}
                   selectedRegion={selectedRegion}
+                  count={count}
                 ></SecondSearch>
               </div>
             )}
           </div>
         </Container>
       </div>
-
-
-
 
       <div>
         {destinationOpen && (
@@ -121,7 +130,7 @@ const Navbar = () => {
         )}
       </div>
 
-      <div>{guestOpen && <Who></Who>}</div>
+      <div>{guestOpen && <Who count={count} setCount={setCount}></Who>}</div>
     </div>
   );
 };

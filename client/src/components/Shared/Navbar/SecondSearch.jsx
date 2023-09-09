@@ -5,9 +5,9 @@ const SecondSearch = ({
   searchedData,
   selectedRegion,
   toggleGuest,
-  toggleDestination
-  }) => {
-
+  toggleDestination,
+  count,
+}) => {
   const navigate = useNavigate();
 
   const handleSearchedRooms = () => {
@@ -45,7 +45,14 @@ const SecondSearch = ({
             className="py-1 pl-5 hover:bg-neutral-200 rounded-full"
           >
             <p className="font-semibold">Who</p>
-            <p className="hidden sm:block">Add guests</p>
+
+            {count ? (
+              <p className="hidden sm:block">
+                {count === 1 ? `${count} guest` : `${count} guests`}
+              </p>
+            ) : (
+              <p className="hidden sm:block">Add guests</p>
+            )}
           </div>
 
           <div

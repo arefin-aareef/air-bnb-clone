@@ -1,8 +1,6 @@
-import { useState } from "react";
 import { BiMinus, BiPlus } from "react-icons/bi";
 
-const Who = () => {
-  const [count, setCount] = useState(0);
+const Who = ({count, setCount}) => {
 
   const handleIncrement = () => {
     if (count < 10) {
