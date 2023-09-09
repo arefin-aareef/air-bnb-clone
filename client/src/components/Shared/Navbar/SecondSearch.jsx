@@ -7,6 +7,8 @@ const SecondSearch = ({
   toggleGuest,
   toggleDestination,
   count,
+  toggleCheckIn,
+  toggleCheckOut,
 }) => {
   const navigate = useNavigate();
 
@@ -20,7 +22,7 @@ const SecondSearch = ({
         <div className="grid grid-cols-5 gap-1">
           <div
             onClick={toggleDestination}
-            className="py-2 pl-5 hover:bg-neutral-200 rounded-full"
+            className="py-1 pl-5 hover:bg-neutral-200 rounded-full"
           >
             <p className="font-semibold ">Where</p>
             {selectedRegion && selectedRegion ? (
@@ -30,12 +32,18 @@ const SecondSearch = ({
             )}
           </div>
 
-          <div className="py-1 pl-5 hover:bg-neutral-200 rounded-full">
+          <div
+            onClick={toggleCheckIn}
+            className="py-1 pl-5 hover:bg-neutral-200 rounded-full"
+          >
             <p className="font-semibold">Check in</p>
             <p className="hidden sm:block">Add dates</p>
           </div>
 
-          <div className="py-1 pl-5 hover:bg-neutral-200 rounded-full">
+          <div
+            onClick={toggleCheckOut}
+            className="py-1 pl-5 hover:bg-neutral-200 rounded-full"
+          >
             <p className="font-semibold">Check out</p>
             <p className="hidden sm:block">Add dates</p>
           </div>

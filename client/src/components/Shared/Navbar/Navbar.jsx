@@ -8,12 +8,15 @@ import SecondNavbar from "./SecondNavbar";
 import Who from "./Who";
 import Where from "./Where";
 import Loader from "../Loader";
+import { Calendar } from "react-date-range";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [guestOpen, setGuestOpen] = useState(false);
   const [destinationOpen, setDestinationOpen] = useState(false);
   const [count, setCount] = useState(0);
+  const [checkIn, setCheckIn] = useState(false);
+  const [checkOut, setCheckOut] = useState(false);
 
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -27,6 +30,10 @@ const Navbar = () => {
   const toggleDestination = () => {
     if (guestOpen) {
       setGuestOpen(false);
+    } else if (checkIn) {
+      setCheckIn(false);
+    } else if (checkOut) {
+      setCheckOut(false);
     }
     setDestinationOpen(!destinationOpen);
   };
@@ -34,8 +41,34 @@ const Navbar = () => {
   const toggleGuest = () => {
     if (destinationOpen) {
       setDestinationOpen(false);
+    } else if (checkIn) {
+      setCheckIn(false);
+    } else if (checkOut) {
+      setCheckOut(false);
     }
     setGuestOpen(!guestOpen);
+  };
+
+  const toggleCheckIn = () => {
+    if (guestOpen) {
+      setGuestOpen(false);
+    } else if (destinationOpen) {
+      setDestinationOpen(false);
+    } else if (checkOut) {
+      setCheckOut(false);
+    }
+    setCheckIn(!checkIn);
+  };
+
+  const toggleCheckOut = () => {
+    if (guestOpen) {
+      setGuestOpen(false);
+    } else if (destinationOpen) {
+      setDestinationOpen(false);
+    } else if (checkIn) {
+      setCheckIn(false);
+    }
+    setCheckOut(!checkOut);
   };
 
   useEffect(() => {
@@ -67,8 +100,6 @@ const Navbar = () => {
       } else {
         return true;
       }
-
-      // return regionSelected && guestsMatch ;
     });
 
     console.log("check", count);
@@ -80,6 +111,8 @@ const Navbar = () => {
     if (!isOpen) {
       setGuestOpen(false);
       setDestinationOpen(false);
+      setCheckIn(false);
+      setCheckOut(false);
     }
   }, [isOpen]);
 
@@ -110,6 +143,8 @@ const Navbar = () => {
                 <SecondSearch
                   toggleGuest={toggleGuest}
                   toggleDestination={toggleDestination}
+                  toggleCheckIn={toggleCheckIn}
+                  toggleCheckOut={toggleCheckOut}
                   searchedData={searchedData}
                   selectedRegion={selectedRegion}
                   count={count}
@@ -127,6 +162,22 @@ const Navbar = () => {
             setSelectedRegion={setSelectedRegion}
             setDestinationOpen={setDestinationOpen}
           ></Where>
+        )}
+      </div>
+
+      <div>
+        {checkIn && (
+          <div className="absolute top-[170px] left-[450px]  rounded-2xl shadow-2xl bg-white w-[360px] flex justify-center">
+            <Calendar></Calendar>
+          </div>
+        )}
+      </div>
+
+      <div>
+        {checkOut && (
+          <div className="absolute top-[170px] left-[650px]  rounded-2xl shadow-2xl bg-white w-[360px] flex justify-center">
+            <Calendar></Calendar>
+          </div>
         )}
       </div>
 
