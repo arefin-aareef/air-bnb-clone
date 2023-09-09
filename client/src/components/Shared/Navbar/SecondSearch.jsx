@@ -3,11 +3,8 @@ import { BiSearch } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import Loader from "../Loader";
 import Where from "./Where";
-import Who from "./Who";
 
-const SecondSearch = () => {
-
-
+const SecondSearch = ({ toggleGuest }) => {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchedData, setSearchedData] = useState([]);
@@ -66,7 +63,10 @@ const SecondSearch = () => {
           </div>
 
           <div className="py-1 pl-5 hover:bg-neutral-200 rounded-full">
-            <Who></Who>
+            <div onClick={toggleGuest}>
+              <p className="font-semibold">Who</p>
+              <p className="hidden sm:block">Add guests</p>
+            </div>
           </div>
 
           <div

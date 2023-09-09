@@ -2,19 +2,28 @@ import Container from "../Container";
 import Logo from "./Logo";
 import MenuDropdown from "./MenuDropdown";
 import Search from "./Search";
-import { useCallback, useState } from "react";
+import { useEffect, useState } from "react";
 import SecondSearch from "./SecondSearch";
 import SecondNavbar from "./SecondNavbar";
+import Who  from './Who';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [guestOpen, setGuestOpen] = useState(false);
 
-  const toggleOpen = useCallback(() => {
-    setIsOpen((value) => {
-        setIsOpen(!value)
-    });
-    
-  }, []);
+  const toggleOpen = () => {
+    setIsOpen(!isOpen)
+  };
+  
+  const toggleGuest = () => {
+    setGuestOpen(!guestOpen);
+  }
+
+  useEffect(() => {
+    if (!isOpen && guestOpen) {
+      setGuestOpen(false);
+    }
+  }, [isOpen, guestOpen]);
 
 
   return (
@@ -35,12 +44,19 @@ const Navbar = () => {
           <div>
             {isOpen && (
               <div className="mt-6">
-                <SecondSearch></SecondSearch>
+                <SecondSearch toggleGuest={toggleGuest}></SecondSearch>
               </div>
             )}
           </div>
+
+
         </Container>
       </div>
+      <div>
+        {
+          guestOpen && guestOpen ? <> <Who></Who> </> : <></>
+        }
+        </div>
     </div>
   );
 };
