@@ -8,7 +8,10 @@ import SecondNavbar from "./SecondNavbar";
 import Who from "./Who";
 import Where from "./Where";
 import Loader from "../Loader";
-import CheckInOut from "../../Rooms/CheckInOut";
+import { Calendar } from "react-date-range";
+
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,8 +26,10 @@ const Navbar = () => {
   const [searchedData, setSearchedData] = useState([]);
   const [selectedRegion, setSelectedRegion] = useState();
 
+  const [selectedCheckIn, setSelectedCheckIn] = useState()
+  const [selectedCheckOut, setSelectedCheckOut] = useState()
 
-  
+
 
   const toggleOpen = () => {
     setIsOpen(!isOpen);
@@ -75,6 +80,15 @@ const Navbar = () => {
   };
 
   useEffect(() => {
+    if (!isOpen) {
+      setGuestOpen(false);
+      setDestinationOpen(false);
+      setCheckIn(false);
+      setCheckOut(false);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
     setLoading(true);
     fetch("./rooms.json")
       .then((res) => res.json())
@@ -94,6 +108,11 @@ const Navbar = () => {
         selectedRegion === "any" || region === selectedRegion;
       const guestsMatch = room.guests >= count;
 
+      const dateMatch = room["dateRange"]
+      const checkInDate = dateMatch.split('-')[0]
+      const checkOutDate = dateMatch.split('-')[1]
+
+      
 
       if (selectedRegion && count > 0) {
         return regionSelected && guestsMatch;
@@ -106,20 +125,38 @@ const Navbar = () => {
       }
     });
 
-
-
-
     setSearchedData([updatedData]);
-  }, [rooms, selectedRegion, count]);
+  }, [rooms, selectedRegion, count, selectedCheckIn, selectedCheckOut]);
 
-  useEffect(() => {
-    if (!isOpen) {
-      setGuestOpen(false);
-      setDestinationOpen(false);
-      setCheckIn(false);
-      setCheckOut(false);
-    }
-  }, [isOpen]);
+
+  
+
+  
+
+
+
+  const handleCheckIn = (date) => {
+    const formattedDate = date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: '2-digit',
+    });
+    setSelectedCheckIn(formattedDate)
+  }
+  // console.log(selectedCheckIn);
+
+  const handleCheckOut = (date) => {
+    const formattedDate = date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: '2-digit',
+    });
+    setSelectedCheckOut(formattedDate)
+  }
+  // console.log(selectedCheckOut);
+
+
+
 
   if (loading) {
     return <Loader></Loader>;
@@ -153,6 +190,8 @@ const Navbar = () => {
                   searchedData={searchedData}
                   selectedRegion={selectedRegion}
                   count={count}
+                  selectedCheckIn={selectedCheckIn}
+                  selectedCheckOut={selectedCheckOut}
                 ></SecondSearch>
               </div>
             )}
@@ -172,8 +211,9 @@ const Navbar = () => {
 
       <div>
         {checkIn && (
-          <div className="absolute top-[170px] left-[450px]  rounded-2xl shadow-2xl bg-white w-[460px] flex justify-center">
-            <CheckInOut></CheckInOut>
+          <div className="absolute top-[170px] left-[450px]  rounded-2xl shadow-2xl bg-white w-[360px] flex justify-center">
+            {/* <CheckInOut></CheckInOut> */}
+            <Calendar date={new Date()} onChange={handleCheckIn} />
           </div>
         )}
       </div>
@@ -181,7 +221,8 @@ const Navbar = () => {
       <div>
         {checkOut && (
           <div className="absolute top-[170px] left-[650px]  rounded-2xl shadow-2xl bg-white w-[360px] flex justify-center">
-            <CheckInOut></CheckInOut>
+            {/* <CheckInOut></CheckInOut> */}
+            <Calendar date={new Date()} onChange={handleCheckOut} />
           </div>
         )}
       </div>

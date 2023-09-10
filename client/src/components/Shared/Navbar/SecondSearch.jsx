@@ -9,6 +9,8 @@ const SecondSearch = ({
   count,
   toggleCheckIn,
   toggleCheckOut,
+  selectedCheckIn,
+  selectedCheckOut
 }) => {
   const navigate = useNavigate();
 
@@ -37,7 +39,8 @@ const SecondSearch = ({
             className="py-1 pl-5 hover:bg-neutral-200 rounded-full"
           >
             <p className="font-semibold">Check in</p>
-            <p className="hidden sm:block">Add dates</p>
+            {selectedCheckIn ? <p className="hidden sm:block">{selectedCheckIn}</p> : <p className="hidden sm:block">Add dates</p>}
+            
           </div>
 
           <div
@@ -45,7 +48,7 @@ const SecondSearch = ({
             className="py-1 pl-5 hover:bg-neutral-200 rounded-full"
           >
             <p className="font-semibold">Check out</p>
-            <p className="hidden sm:block">Add dates</p>
+            {selectedCheckOut ? <p className="hidden sm:block">{selectedCheckOut}</p> : <p className="hidden sm:block">Add dates</p>}
           </div>
 
           <div
