@@ -8,7 +8,7 @@ import SecondNavbar from "./SecondNavbar";
 import Who from "./Who";
 import Where from "./Where";
 import Loader from "../Loader";
-import { Calendar } from "react-date-range";
+import CheckInOut from "../../Rooms/CheckInOut";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,6 +22,9 @@ const Navbar = () => {
   const [loading, setLoading] = useState(false);
   const [searchedData, setSearchedData] = useState([]);
   const [selectedRegion, setSelectedRegion] = useState();
+
+
+  
 
   const toggleOpen = () => {
     setIsOpen(!isOpen);
@@ -91,6 +94,7 @@ const Navbar = () => {
         selectedRegion === "any" || region === selectedRegion;
       const guestsMatch = room.guests >= count;
 
+
       if (selectedRegion && count > 0) {
         return regionSelected && guestsMatch;
       } else if (selectedRegion) {
@@ -102,7 +106,8 @@ const Navbar = () => {
       }
     });
 
-    console.log("check", count);
+
+
 
     setSearchedData([updatedData]);
   }, [rooms, selectedRegion, count]);
@@ -167,8 +172,8 @@ const Navbar = () => {
 
       <div>
         {checkIn && (
-          <div className="absolute top-[170px] left-[450px]  rounded-2xl shadow-2xl bg-white w-[360px] flex justify-center">
-            <Calendar></Calendar>
+          <div className="absolute top-[170px] left-[450px]  rounded-2xl shadow-2xl bg-white w-[460px] flex justify-center">
+            <CheckInOut></CheckInOut>
           </div>
         )}
       </div>
@@ -176,7 +181,7 @@ const Navbar = () => {
       <div>
         {checkOut && (
           <div className="absolute top-[170px] left-[650px]  rounded-2xl shadow-2xl bg-white w-[360px] flex justify-center">
-            <Calendar></Calendar>
+            <CheckInOut></CheckInOut>
           </div>
         )}
       </div>

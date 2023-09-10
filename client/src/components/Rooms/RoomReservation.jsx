@@ -1,5 +1,4 @@
 import Button from "../Button/Button";
-import Calender from "./Calender";
 
 const RoomReservation = () => {
   return (
@@ -10,7 +9,7 @@ const RoomReservation = () => {
       </div>
       <hr />
       <div className="flex justify-center scale-x-100">
-        <Calender></Calender>
+        {/* <Calender></Calender> */}
       </div>
       <hr />
       <div className="p-4">
