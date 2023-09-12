@@ -79,6 +79,23 @@ const Navbar = () => {
     setCheckOut(!checkOut);
   };
 
+  const formatDate = (date) => {
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: '2-digit',
+    });
+  };
+  
+  const handleCheckIn = (date) => {
+    setSelectedCheckIn(formatDate(date));
+  };
+  
+  const handleCheckOut = (date) => {
+    setSelectedCheckOut(formatDate(date));
+  };
+  
+
   useEffect(() => {
     if (!isOpen) {
       setGuestOpen(false);
@@ -108,12 +125,6 @@ const Navbar = () => {
         selectedRegion === "any" || region === selectedRegion;
       const guestsMatch = room.guests >= count;
 
-      const dateMatch = room["dateRange"]
-      const checkInDate = dateMatch.split('-')[0]
-      const checkOutDate = dateMatch.split('-')[1]
-
-      
-
       if (selectedRegion && count > 0) {
         return regionSelected && guestsMatch;
       } else if (selectedRegion) {
@@ -128,32 +139,11 @@ const Navbar = () => {
     setSearchedData([updatedData]);
   }, [rooms, selectedRegion, count, selectedCheckIn, selectedCheckOut]);
 
-
-  
-
   
 
 
 
-  const handleCheckIn = (date) => {
-    const formattedDate = date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: '2-digit',
-    });
-    setSelectedCheckIn(formattedDate)
-  }
-  // console.log(selectedCheckIn);
 
-  const handleCheckOut = (date) => {
-    const formattedDate = date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: '2-digit',
-    });
-    setSelectedCheckOut(formattedDate)
-  }
-  // console.log(selectedCheckOut);
 
 
 
