@@ -26,8 +26,11 @@ const Navbar = () => {
   const [searchedData, setSearchedData] = useState([]);
   const [selectedRegion, setSelectedRegion] = useState();
 
-  const [selectedCheckIn, setSelectedCheckIn] = useState()
-  const [selectedCheckOut, setSelectedCheckOut] = useState()
+  const [selectedCheckIn, setSelectedCheckIn] = useState(null)
+  const [selectedCheckOut, setSelectedCheckOut] = useState(null)
+
+
+
 
 
 
@@ -79,20 +82,25 @@ const Navbar = () => {
     setCheckOut(!checkOut);
   };
 
-  const formatDate = (date) => {
-    return date.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: '2-digit',
-    });
-  };
+  // const formatDate = (date) => {
+  //   return date.toLocaleDateString('en-US', {
+  //     year: 'numeric',
+  //     month: 'short',
+  //     day: '2-digit',
+  //   });
+  // };
   
   const handleCheckIn = (date) => {
-    setSelectedCheckIn(formatDate(date));
+    // setSelectedCheckIn(date);
+    setSelectedCheckIn(date.toLocaleDateString());
+
   };
   
   const handleCheckOut = (date) => {
-    setSelectedCheckOut(formatDate(date));
+    // setSelectedCheckOut(date);
+    // setSelectedCheckOut(formatDate(date));
+    setSelectedCheckOut(date.toLocaleDateString());
+
   };
   
 
@@ -118,15 +126,64 @@ const Navbar = () => {
       });
   }, []);
 
+
+
+  // useEffect(() => {
+  //   const updatedData = rooms.filter((room) => {
+  //     const region = room["region"];
+  //     const regionSelected = selectedRegion === "any" || region === selectedRegion;
+  //     const guestsMatch = room.guests >= count;
+
+  //     const availableFromDate = new Date(room.availableFrom);
+  //     const availableToDate = new Date(room.availableTo);
+  //     const selectedCheckInDate = selectedCheckIn ? new Date(selectedCheckIn) : null;
+  //     const selectedCheckOutDate = selectedCheckOut ? new Date(selectedCheckOut) : null;
+
+  //     const filterCheckIn = selectedCheckInDate >= availableFromDate
+  //     const filterCheckOut = selectedCheckOutDate <= availableToDate
+
+  //     if (selectedRegion && count > 0) {
+  //       return regionSelected && guestsMatch;
+  //     } else if (selectedRegion) {
+  //       return regionSelected;
+  //     } else if (count > 0) {
+  //       return guestsMatch;
+  //     } else {
+  //       return true;
+  //     }
+  //   });
+
+  //   setSearchedData([updatedData]);
+  // }, [rooms, selectedRegion, count, selectedCheckIn, selectedCheckOut]);
+
+  
+
+
+
   useEffect(() => {
     const updatedData = rooms.filter((room) => {
       const region = room["region"];
-      const regionSelected =
-        selectedRegion === "any" || region === selectedRegion;
+      const regionSelected = selectedRegion === "any" || region === selectedRegion;
       const guestsMatch = room.guests >= count;
 
-      if (selectedRegion && count > 0) {
-        return regionSelected && guestsMatch;
+      const selectedCheckInDate = new Date(selectedCheckIn);
+      const selectedCheckOutDate = new Date(selectedCheckOut);
+
+      // Convert availableFrom and availableTo to Date objects
+      const availableFromDate = new Date(room.availableFrom);
+      const availableToDate = new Date(room.availableTo);
+
+      // Check if the room is available between selectedCheckIn and selectedCheckOut
+      const filterCheckIn = selectedCheckInDate >= availableFromDate;
+      const filterCheckOut = selectedCheckOutDate <= availableToDate;
+
+
+
+      if (selectedRegion && count > 0 && selectedCheckIn && selectedCheckOut) {
+        // Convert selectedCheckIn and selectedCheckOut to Date objects
+       
+
+        return regionSelected && guestsMatch && filterCheckIn && filterCheckOut;
       } else if (selectedRegion) {
         return regionSelected;
       } else if (count > 0) {
@@ -136,15 +193,8 @@ const Navbar = () => {
       }
     });
 
-    setSearchedData([updatedData]);
+    setSearchedData([updatedData]); // Remove the square brackets around updatedData
   }, [rooms, selectedRegion, count, selectedCheckIn, selectedCheckOut]);
-
-  
-
-
-
-
-
 
 
 
@@ -202,8 +252,8 @@ const Navbar = () => {
       <div>
         {checkIn && (
           <div className="absolute top-[170px] left-[450px]  rounded-2xl shadow-2xl bg-white w-[360px] flex justify-center">
-            {/* <CheckInOut></CheckInOut> */}
-            <Calendar date={new Date()} onChange={handleCheckIn} />
+            <Calendar  onChange={handleCheckIn} />
+
           </div>
         )}
       </div>
@@ -211,8 +261,8 @@ const Navbar = () => {
       <div>
         {checkOut && (
           <div className="absolute top-[170px] left-[650px]  rounded-2xl shadow-2xl bg-white w-[360px] flex justify-center">
-            {/* <CheckInOut></CheckInOut> */}
-            <Calendar date={new Date()} onChange={handleCheckOut} />
+            <Calendar  onChange={handleCheckOut} />
+
           </div>
         )}
       </div>
