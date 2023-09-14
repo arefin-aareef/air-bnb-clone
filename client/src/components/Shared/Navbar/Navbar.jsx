@@ -8,10 +8,10 @@ import SecondNavbar from "./SecondNavbar";
 import Who from "./Who";
 import Where from "./Where";
 import Loader from "../Loader";
-import { Calendar } from "react-date-range";
 
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
+import CalenderComp from "./CalenderComp";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,14 +25,6 @@ const Navbar = () => {
   const [loading, setLoading] = useState(false);
   const [searchedData, setSearchedData] = useState([]);
   const [selectedRegion, setSelectedRegion] = useState();
-
-  const [selectedCheckIn, setSelectedCheckIn] = useState(null)
-  const [selectedCheckOut, setSelectedCheckOut] = useState(null)
-
-
-
-
-
 
   const toggleOpen = () => {
     setIsOpen(!isOpen);
@@ -82,28 +74,6 @@ const Navbar = () => {
     setCheckOut(!checkOut);
   };
 
-  // const formatDate = (date) => {
-  //   return date.toLocaleDateString('en-US', {
-  //     year: 'numeric',
-  //     month: 'short',
-  //     day: '2-digit',
-  //   });
-  // };
-  
-  const handleCheckIn = (date) => {
-    // setSelectedCheckIn(date);
-    setSelectedCheckIn(date.toLocaleDateString());
-
-  };
-  
-  const handleCheckOut = (date) => {
-    // setSelectedCheckOut(date);
-    // setSelectedCheckOut(formatDate(date));
-    setSelectedCheckOut(date.toLocaleDateString());
-
-  };
-  
-
   useEffect(() => {
     if (!isOpen) {
       setGuestOpen(false);
@@ -126,64 +96,15 @@ const Navbar = () => {
       });
   }, []);
 
-
-
-  // useEffect(() => {
-  //   const updatedData = rooms.filter((room) => {
-  //     const region = room["region"];
-  //     const regionSelected = selectedRegion === "any" || region === selectedRegion;
-  //     const guestsMatch = room.guests >= count;
-
-  //     const availableFromDate = new Date(room.availableFrom);
-  //     const availableToDate = new Date(room.availableTo);
-  //     const selectedCheckInDate = selectedCheckIn ? new Date(selectedCheckIn) : null;
-  //     const selectedCheckOutDate = selectedCheckOut ? new Date(selectedCheckOut) : null;
-
-  //     const filterCheckIn = selectedCheckInDate >= availableFromDate
-  //     const filterCheckOut = selectedCheckOutDate <= availableToDate
-
-  //     if (selectedRegion && count > 0) {
-  //       return regionSelected && guestsMatch;
-  //     } else if (selectedRegion) {
-  //       return regionSelected;
-  //     } else if (count > 0) {
-  //       return guestsMatch;
-  //     } else {
-  //       return true;
-  //     }
-  //   });
-
-  //   setSearchedData([updatedData]);
-  // }, [rooms, selectedRegion, count, selectedCheckIn, selectedCheckOut]);
-
-  
-
-
-
   useEffect(() => {
     const updatedData = rooms.filter((room) => {
       const region = room["region"];
-      const regionSelected = selectedRegion === "any" || region === selectedRegion;
+      const regionSelected =
+        selectedRegion === "any" || region === selectedRegion;
       const guestsMatch = room.guests >= count;
 
-      const selectedCheckInDate = new Date(selectedCheckIn);
-      const selectedCheckOutDate = new Date(selectedCheckOut);
-
-      // Convert availableFrom and availableTo to Date objects
-      const availableFromDate = new Date(room.availableFrom);
-      const availableToDate = new Date(room.availableTo);
-
-      // Check if the room is available between selectedCheckIn and selectedCheckOut
-      const filterCheckIn = selectedCheckInDate >= availableFromDate;
-      const filterCheckOut = selectedCheckOutDate <= availableToDate;
-
-
-
-      if (selectedRegion && count > 0 && selectedCheckIn && selectedCheckOut) {
-        // Convert selectedCheckIn and selectedCheckOut to Date objects
-       
-
-        return regionSelected && guestsMatch && filterCheckIn && filterCheckOut;
+      if (selectedRegion && count > 0) {
+        return regionSelected && guestsMatch;
       } else if (selectedRegion) {
         return regionSelected;
       } else if (count > 0) {
@@ -193,10 +114,8 @@ const Navbar = () => {
       }
     });
 
-    setSearchedData([updatedData]); // Remove the square brackets around updatedData
-  }, [rooms, selectedRegion, count, selectedCheckIn, selectedCheckOut]);
-
-
+    setSearchedData([updatedData]);
+  }, [rooms, selectedRegion, count]);
 
   if (loading) {
     return <Loader></Loader>;
@@ -230,8 +149,6 @@ const Navbar = () => {
                   searchedData={searchedData}
                   selectedRegion={selectedRegion}
                   count={count}
-                  selectedCheckIn={selectedCheckIn}
-                  selectedCheckOut={selectedCheckOut}
                 ></SecondSearch>
               </div>
             )}
@@ -252,8 +169,7 @@ const Navbar = () => {
       <div>
         {checkIn && (
           <div className="absolute top-[170px] left-[450px]  rounded-2xl shadow-2xl bg-white w-[360px] flex justify-center">
-            <Calendar  onChange={handleCheckIn} />
-
+            <CalenderComp></CalenderComp>
           </div>
         )}
       </div>
@@ -261,8 +177,7 @@ const Navbar = () => {
       <div>
         {checkOut && (
           <div className="absolute top-[170px] left-[650px]  rounded-2xl shadow-2xl bg-white w-[360px] flex justify-center">
-            <Calendar  onChange={handleCheckOut} />
-
+            <CalenderComp></CalenderComp>
           </div>
         )}
       </div>
