@@ -9,10 +9,10 @@ import Who from "./Who";
 import Where from "./Where";
 import Loader from "../Loader";
 
-import "react-date-range/dist/styles.css"; // main style file
-import "react-date-range/dist/theme/default.css"; // theme css file
-import CalenderComp from "./CalenderComp";
-import { DateRangePicker } from "react-date-range";
+import "react-date-range/dist/styles.css"; 
+import "react-date-range/dist/theme/default.css";
+import { Calendar } from "react-date-range";
+import { format } from "date-fns";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -78,23 +78,34 @@ const Navbar = () => {
     setCheckOut(!checkOut);
   };
 
-  const handleSelect = (date) => {
-    setStartDate(date.selection.startDate);
-    setEndDate(date.selection.endDate);
+  const clearRegion = () => {
+    setSelectedRegion(null);
   };
-
-  const selectionRange = {
-    startDate: startDate,
-    endDate: endDate,
-    key: "selection",
+  const clearCheckIn = () => {
+    setStartDate(null);
   };
-
+  const clearCheckOut = () => {
+    setEndDate(null);
+  };
   const clearCount = () => {
-    // setSelectedRegion(null);
-    // setStartDate(null);
-    // setEndDate(null);
     setCount(0);
   };
+
+  const handleSelectStart = (date) => {
+    setStartDate(date);
+    setCheckIn(false);
+    setCheckOut(true);
+  };
+  const handleSelectEnd = (date) => {
+    setEndDate(date);
+    setCheckOut(false);
+    setGuestOpen(true);
+  };
+
+  const formattedStartDate = startDate
+    ? format(startDate, "MMM, dd, yyyy")
+    : null;
+  const formattedEndDate = endDate ? format(endDate, "MMM, dd, yyyy") : null;
 
   useEffect(() => {
     if (!isOpen) {
@@ -127,12 +138,9 @@ const Navbar = () => {
 
       const checkInDate = new Date(room["availableFrom"]);
       const checkOutDate = new Date(room["availableTo"]);
-
       const startSelected = startDate >= checkInDate;
       const endSelected = endDate <= checkOutDate;
       const rangeSelected = startSelected && endSelected;
-
-      // return  console.log(regionSelected);
 
       if (selectedRegion && count > 0 && startDate && endDate) {
         return regionSelected && guestsMatch && rangeSelected;
@@ -157,8 +165,6 @@ const Navbar = () => {
 
     setSearchedData([updatedData]);
   }, [rooms, selectedRegion, count, startDate, endDate]);
-
-
 
   if (loading) {
     return <Loader></Loader>;
@@ -193,6 +199,12 @@ const Navbar = () => {
                   selectedRegion={selectedRegion}
                   count={count}
                   clearCount={clearCount}
+                  clearRegion={clearRegion}
+                  clearCheckIn={clearCheckIn}
+                  clearCheckOut={clearCheckOut}
+                  startDate={formattedStartDate}
+                  endDate={formattedEndDate}
+                  setGuestOpen={setGuestOpen}
                 ></SecondSearch>
               </div>
             )}
@@ -206,6 +218,7 @@ const Navbar = () => {
             selectedRegion={selectedRegion}
             setSelectedRegion={setSelectedRegion}
             setDestinationOpen={setDestinationOpen}
+            setCheckIn={setCheckIn}
           ></Where>
         )}
       </div>
@@ -213,14 +226,7 @@ const Navbar = () => {
       <div>
         {checkIn && (
           <div className="absolute top-[170px] left-[450px]  rounded-2xl shadow-2xl bg-white w-[360px] flex justify-center">
-            <DateRangePicker
-              ranges={[selectionRange]}
-              onChange={handleSelect}
-              startDate={startDate}
-              endDate={endDate}
-              months={2}
-              direction={'horizontal'}
-            />
+            <Calendar onChange={handleSelectStart} date={startDate}></Calendar>
           </div>
         )}
       </div>
@@ -228,7 +234,7 @@ const Navbar = () => {
       <div>
         {checkOut && (
           <div className="absolute top-[170px] left-[650px]  rounded-2xl shadow-2xl bg-white w-[360px] flex justify-center">
-            <CalenderComp></CalenderComp>
+            <Calendar onChange={handleSelectEnd} date={endDate}></Calendar>
           </div>
         )}
       </div>

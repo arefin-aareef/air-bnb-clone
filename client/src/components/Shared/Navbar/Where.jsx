@@ -1,4 +1,4 @@
-const Where = ({ selectedRegion, setSelectedRegion, setDestinationOpen }) => {
+const Where = ({ selectedRegion, setSelectedRegion, setDestinationOpen, setCheckIn }) => {
   const regionOptions = [
     "any",
     "asia",
@@ -22,6 +22,7 @@ const Where = ({ selectedRegion, setSelectedRegion, setDestinationOpen }) => {
               e.stopPropagation();
               setSelectedRegion(option);
               setDestinationOpen(false)
+              setCheckIn(true)
             }}
           >
             {option}

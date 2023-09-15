@@ -10,14 +10,19 @@ const SecondSearch = ({
   count,
   toggleCheckIn,
   toggleCheckOut,
-  selectedCheckIn,
-  selectedCheckOut,
+  startDate,
+  endDate,
   clearCount,
+  clearRegion,
+  clearCheckIn,
+  clearCheckOut,
+  setGuestOpen
 }) => {
   const navigate = useNavigate();
 
   const handleSearchedRooms = () => {
     navigate("/searched-rooms", { state: { searchedData } });
+    setGuestOpen(false)
   };
 
   return (
@@ -26,38 +31,85 @@ const SecondSearch = ({
         <div className="grid grid-cols-5 gap-1">
           <div
             onClick={toggleDestination}
-            className="py-1 pl-5 hover:bg-neutral-200 rounded-full"
+            className="py-1 pl-5 hover:bg-neutral-200 rounded-full  flex justify-between items-center"
           >
-            <p className="font-semibold ">Where</p>
-            {selectedRegion && selectedRegion ? (
-              <p className="uppercase hidden sm:block">{selectedRegion}</p>
-            ) : (
-              <p className="hidden sm:block">Search Destination</p>
-            )}
+            <div>
+              <p className="font-semibold ">Where</p>
+              {selectedRegion && selectedRegion ? (
+                <p className="uppercase hidden sm:block">{selectedRegion}</p>
+              ) : (
+                <p className="hidden sm:block">Search Destination</p>
+              )}
+            </div>
+
+            <div className="me-2">
+              {selectedRegion ? (
+                <button
+                  onClick={clearRegion}
+                  className="btn btn-circle btn-ghost btn-sm"
+                >
+                  <GrFormClose></GrFormClose>
+                </button>
+              ) : (
+                <></>
+              )}
+            </div>
           </div>
 
           <div
             onClick={toggleCheckIn}
-            className="py-1 pl-5 hover:bg-neutral-200 rounded-full"
+            className="py-1 pl-5 hover:bg-neutral-200 rounded-full  flex justify-between items-center"
           >
-            <p className="font-semibold">Check in</p>
-            {selectedCheckIn ? (
-              <p className="hidden sm:block">{selectedCheckIn}</p>
-            ) : (
-              <p className="hidden sm:block">Add dates</p>
-            )}
+            <div>
+              <p className="font-semibold">Check in</p>
+              {startDate ? (
+                <p className="hidden sm:block">{startDate}</p>
+              ) : (
+                <p className="hidden sm:block">Add dates</p>
+              )}
+            </div>
+
+            <div className="me-2">
+              {startDate ? (
+                <button
+                  onClick={clearCheckIn}
+                  className="btn btn-circle btn-ghost btn-sm"
+                >
+                  <GrFormClose></GrFormClose>
+                </button>
+              ) : (
+                <></>
+              )}
+            </div>
+
           </div>
 
           <div
             onClick={toggleCheckOut}
-            className="py-1 pl-5 hover:bg-neutral-200 rounded-full"
+            className="py-1 pl-5 hover:bg-neutral-200 rounded-full  flex justify-between items-center"
           >
+            <div>
             <p className="font-semibold">Check out</p>
-            {selectedCheckOut ? (
-              <p className="hidden sm:block">{selectedCheckOut}</p>
+            {endDate ? (
+              <p className="hidden sm:block">{endDate}</p>
             ) : (
               <p className="hidden sm:block">Add dates</p>
             )}
+            </div>
+
+            <div className="me-2">
+              {endDate ? (
+                <button
+                  onClick={clearCheckOut}
+                  className="btn btn-circle btn-ghost btn-sm"
+                >
+                  <GrFormClose></GrFormClose>
+                </button>
+              ) : (
+                <></>
+              )}
+            </div>
+
           </div>
 
           <div
