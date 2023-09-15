@@ -225,7 +225,7 @@ const Navbar = () => {
 
       <div>
         {checkIn && (
-          <div className="absolute top-[170px] left-[450px]  rounded-2xl shadow-2xl bg-white w-[360px] flex justify-center">
+          <div className="absolute top-[170px] left-[400px]  rounded-2xl shadow-2xl bg-white w-[360px] flex justify-center">
             <Calendar onChange={handleSelectStart} date={startDate}></Calendar>
           </div>
         )}
@@ -233,7 +233,7 @@ const Navbar = () => {
 
       <div>
         {checkOut && (
-          <div className="absolute top-[170px] left-[650px]  rounded-2xl shadow-2xl bg-white w-[360px] flex justify-center">
+          <div className="absolute top-[170px] left-[580px]  rounded-2xl shadow-2xl bg-white w-[360px] flex justify-center">
             <Calendar onChange={handleSelectEnd} date={endDate}></Calendar>
           </div>
         )}

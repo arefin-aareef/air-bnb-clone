@@ -8,7 +8,7 @@ const Where = ({ selectedRegion, setSelectedRegion, setDestinationOpen, setCheck
     "europe",
   ];
   return (
-    <div className="flex flex-col  rounded-2xl shadow-2xl w-[450px] bg-white absolute top-[170px] left-[250px]">
+    <div className="flex flex-col  rounded-2xl shadow-2xl w-[450px] bg-white absolute top-[170px] left-[230px]">
       <p className="px-6 pt-5 text-lg">Search by region</p>
       <div className="grid grid-cols-3 gap-2 mx-auto py-6">
         {regionOptions.map((option) => (

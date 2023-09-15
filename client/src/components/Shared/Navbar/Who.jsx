@@ -15,23 +15,23 @@ const Who = ({count, setCount}) => {
   };
 
   return (
-    <div className="absolute top-[170px] right-[280px]  rounded-2xl shadow-2xl bg-white border flex justify-between w-[370px] p-4">
+    <div className="absolute top-[170px] right-[280px]  rounded-2xl shadow-2xl bg-white border flex justify-between w-[300px] p-4">
       <div>
-        <p className="font-semibold text-lg">Adults</p>
-        <p>Ages 13 or above</p>
+        <p className="font-semibold text-md">Adults</p>
+        <p className="text-sm">Ages 13 or above</p>
       </div>
 
       <div className="flex items-center">
         <button
-          className="btn btn-outline rounded-full"
+          className="btn btn-sm btn-circle btn-outline"
           onClick={handleDecrement}
           disabled={count === 0}
         >
           <BiMinus></BiMinus>
         </button>
-        <p className="mx-4 text-lg">{count}</p>
+        <p className="mx-4 text-sm">{count}</p>
         <button
-          className="btn btn-outline rounded-full"
+          className="btn btn-outline btn-sm btn-circle"
           onClick={handleIncrement}
           disabled={count === 10}
         >
