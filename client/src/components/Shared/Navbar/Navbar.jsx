@@ -12,6 +12,7 @@ import Loader from "../Loader";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import CalenderComp from "./CalenderComp";
+import { DateRangePicker } from "react-date-range";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,6 +26,9 @@ const Navbar = () => {
   const [loading, setLoading] = useState(false);
   const [searchedData, setSearchedData] = useState([]);
   const [selectedRegion, setSelectedRegion] = useState();
+
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
   const toggleOpen = () => {
     setIsOpen(!isOpen);
@@ -74,6 +78,17 @@ const Navbar = () => {
     setCheckOut(!checkOut);
   };
 
+  const handleSelect = (date) => {
+    setStartDate(date.selection.startDate);
+    setEndDate(date.selection.endDate);
+  };
+
+  const selectionRange = {
+    startDate: startDate,
+    endDate: endDate,
+    key: "selection",
+  };
+
   useEffect(() => {
     if (!isOpen) {
       setGuestOpen(false);
@@ -103,19 +118,38 @@ const Navbar = () => {
         selectedRegion === "any" || region === selectedRegion;
       const guestsMatch = room.guests >= count;
 
-      if (selectedRegion && count > 0) {
+      const checkInDate = new Date(room["availableFrom"]);
+      const checkOutDate = new Date(room["availableTo"]);
+
+      const startSelected = startDate >= checkInDate;
+      const endSelected = endDate <= checkOutDate;
+      const rangeSelected = startSelected && endSelected;
+
+      // return  console.log(regionSelected);
+
+      if (selectedRegion && count > 0 && startDate && endDate) {
+        return regionSelected && guestsMatch && rangeSelected;
+      } else if (selectedRegion && count > 0) {
         return regionSelected && guestsMatch;
+      } else if (selectedRegion && startDate && endDate) {
+        return regionSelected && rangeSelected;
+      } else if (count > 0 && startDate && endDate) {
+        return guestsMatch && rangeSelected;
       } else if (selectedRegion) {
         return regionSelected;
       } else if (count > 0) {
         return guestsMatch;
+      } else if (startDate && endDate) {
+        return rangeSelected;
       } else {
         return true;
       }
     });
 
+    console.log(updatedData);
+
     setSearchedData([updatedData]);
-  }, [rooms, selectedRegion, count]);
+  }, [rooms, selectedRegion, count, startDate, endDate]);
 
   if (loading) {
     return <Loader></Loader>;
@@ -169,7 +203,14 @@ const Navbar = () => {
       <div>
         {checkIn && (
           <div className="absolute top-[170px] left-[450px]  rounded-2xl shadow-2xl bg-white w-[360px] flex justify-center">
-            <CalenderComp></CalenderComp>
+            <DateRangePicker
+              ranges={[selectionRange]}
+              onChange={handleSelect}
+              startDate={startDate}
+              endDate={endDate}
+              months={2}
+              direction={'horizontal'}
+            />
           </div>
         )}
       </div>
