@@ -1,5 +1,6 @@
 import { BiSearch } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
+import { GrFormClose } from "react-icons/gr";
 
 const SecondSearch = ({
   searchedData,
@@ -10,7 +11,8 @@ const SecondSearch = ({
   toggleCheckIn,
   toggleCheckOut,
   selectedCheckIn,
-  selectedCheckOut
+  selectedCheckOut,
+  clearCount,
 }) => {
   const navigate = useNavigate();
 
@@ -39,8 +41,11 @@ const SecondSearch = ({
             className="py-1 pl-5 hover:bg-neutral-200 rounded-full"
           >
             <p className="font-semibold">Check in</p>
-            {selectedCheckIn ? <p className="hidden sm:block">{selectedCheckIn}</p> : <p className="hidden sm:block">Add dates</p>}
-            
+            {selectedCheckIn ? (
+              <p className="hidden sm:block">{selectedCheckIn}</p>
+            ) : (
+              <p className="hidden sm:block">Add dates</p>
+            )}
           </div>
 
           <div
@@ -48,22 +53,40 @@ const SecondSearch = ({
             className="py-1 pl-5 hover:bg-neutral-200 rounded-full"
           >
             <p className="font-semibold">Check out</p>
-            {selectedCheckOut ? <p className="hidden sm:block">{selectedCheckOut}</p> : <p className="hidden sm:block">Add dates</p>}
+            {selectedCheckOut ? (
+              <p className="hidden sm:block">{selectedCheckOut}</p>
+            ) : (
+              <p className="hidden sm:block">Add dates</p>
+            )}
           </div>
 
           <div
             onClick={toggleGuest}
-            className="py-1 pl-5 hover:bg-neutral-200 rounded-full"
+            className="py-1 pl-5 hover:bg-neutral-200 rounded-full flex justify-between items-center"
           >
-            <p className="font-semibold">Who</p>
+            <div>
+              <p className="font-semibold">Who</p>
+              {count ? (
+                <p className="hidden sm:block">
+                  {count === 1 ? `${count} guest` : `${count} guests`}
+                </p>
+              ) : (
+                <p className="hidden sm:block">Add guests</p>
+              )}
+            </div>
 
-            {count ? (
-              <p className="hidden sm:block">
-                {count === 1 ? `${count} guest` : `${count} guests`}
-              </p>
-            ) : (
-              <p className="hidden sm:block">Add guests</p>
-            )}
+            <div className="me-2">
+              {count > 0 ? (
+                <button
+                  onClick={clearCount}
+                  className="btn btn-circle btn-ghost btn-sm"
+                >
+                  <GrFormClose></GrFormClose>
+                </button>
+              ) : (
+                <></>
+              )}
+            </div>
           </div>
 
           <div

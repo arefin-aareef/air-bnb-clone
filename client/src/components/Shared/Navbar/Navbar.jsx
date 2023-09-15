@@ -89,6 +89,13 @@ const Navbar = () => {
     key: "selection",
   };
 
+  const clearCount = () => {
+    // setSelectedRegion(null);
+    // setStartDate(null);
+    // setEndDate(null);
+    setCount(0);
+  };
+
   useEffect(() => {
     if (!isOpen) {
       setGuestOpen(false);
@@ -151,6 +158,8 @@ const Navbar = () => {
     setSearchedData([updatedData]);
   }, [rooms, selectedRegion, count, startDate, endDate]);
 
+
+
   if (loading) {
     return <Loader></Loader>;
   }
@@ -183,6 +192,7 @@ const Navbar = () => {
                   searchedData={searchedData}
                   selectedRegion={selectedRegion}
                   count={count}
+                  clearCount={clearCount}
                 ></SecondSearch>
               </div>
             )}
